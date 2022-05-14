@@ -139,8 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Class.cpp" />
+    <ClCompile Include="Header.cpp" />
+    <ClCompile Include="List.cpp" />
+    <ClCompile Include="Ungulates.cpp" />
+    <ClCompile Include="Animal.cpp" />
     <ClCompile Include="Lab_3_OOP.cpp" />
+    <ClCompile Include="Birds.cpp" />
+    <ClCompile Include="Mammals.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />

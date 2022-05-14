@@ -8,7 +8,16 @@ using namespace std;
 
 const int L_name = 30;
 
-class ANIMAL
+class TObject
+{
+protected:
+	double weight;
+public:
+	virtual void Show() = 0;
+	virtual double GetWeight() = 0;
+};
+
+class ANIMAL : public TObject
 {
 public:
 	ANIMAL();
@@ -44,31 +53,11 @@ public:
 	// Присвоїти назву, вагу
 	void Set(string, double);
 
-	// Додати в список (головний код)
-	static void add_h(ANIMAL* data);
-
-	// Додати в список
-	virtual void add(ANIMAL* data) = 0;
-
-	// Показати список
-	static void Show();
-
-	// Очстити список
-	static void Clear();
-
-	class Node
-	{
-	public:
-		ANIMAL* data;
-		Node* pNext;
-
-		Node(ANIMAL* data, Node* pNext);
-	};
+	//вивід інформації
+	virtual void Show();
 
 protected:
 	string name;
-	double weight;
-	static Node* head;
 };
 
 
@@ -95,8 +84,6 @@ public:
 
 	// Отримати шерсть
 	string GetWool();
-
-	void add(ANIMAL* data) override;
 };
 
 class UNGULATES : public MAMMALS
@@ -120,8 +107,6 @@ public:
 
 	// Отримати копита
 	string GetHooves();
-
-	void add(ANIMAL* data) override;
 };
 
 class BIRDS : public ANIMAL
@@ -145,6 +130,87 @@ public:
 
 	// Отримати крила
 	string GetWings();
+};
 
-	void add(ANIMAL* data) override;
+class List
+{
+protected:
+	string name;
+public:
+	List();
+
+	List(string name) : name(name) 
+	{ 
+		head = nullptr; 
+	};
+
+	~List();
+	
+	//очищення спочатку
+	void pop_front();
+
+	void clear();
+
+	//додавання елементу в кінець списку
+	void push_back(TObject* data); 
+
+	//оператор [] для доступу по індексу
+	TObject* operator[](const int index); 
+
+	//визначимо тип вказівника на метод
+	typedef void (*PF)(TObject*);
+
+	//ітератор
+	void ForEach(int volume); 
+
+	//знаходження кількості елементів в списку
+	int GetSize()
+	{ 
+		return size; 
+	};
+
+	int GetSizeList() 
+	{ 
+		return sizelist; 
+	}
+
+	//додавання списків в список
+	void AddList(List* engines);
+
+	// створюємо вузол
+	class Node
+	{
+	public:
+		Node* pNext;
+		TObject* data;
+
+		TObject* operator[](const int index);
+
+		Node(TObject* data = nullptr, Node* pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+
+		Node* lNext;
+		List* engines;
+		Node(List* engines, Node* lNext = nullptr)
+		{
+			this->engines = engines;
+			this->lNext = lNext;
+		}
+
+	};
+	int size;
+	int sizelist;
+	Node* head;
+};
+
+//список списків
+class ListOfList : public List
+{
+public:
+	ListOfList() : List() { };
+	ListOfList(string name) : List(name) { };
+	virtual ~ListOfList() { };
 };
